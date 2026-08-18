@@ -1,11 +1,15 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.PatientDTO;
+import com.example.demo.mapper.PatientMapper;
 import com.example.demo.model.Patient;
 import com.example.demo.repository.PatientRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PatientService {
@@ -14,44 +18,31 @@ public class PatientService {
     private PatientRepository repository;
 
     // CREATE
-    public Patient addPatient(Patient patient) {
-        return repository.save(patient);
+    public PatientDTO addPatient(PatientDTO dto) {
+
+        Patient patient = PatientMapper.toEntity(dto);
+
+        Patient savedPatient = repository.save(patient);
+
+        return PatientMapper.toDTO(savedPatient);
     }
 
-    // READ
-    public List<Patient> getPatients() {
-        return repository.findAll();
+    // GET ALL
+    public List<PatientDTO> getPatients() {
+
+        return repository.findAll()
+                .stream()
+                .map(PatientMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
-    // SEARCH BY NAME
-    public List<Patient> findByName(String name) {
-        return repository.findByName(name);
-    }
+    // CUSTOM QUERY
+    public List<PatientDTO> findByNameAndStatus(
+            String name, String status) {
 
-    // SEARCH BY EMAIL
-    public List<Patient> findByEmail(String email) {
-        return repository.findByEmail(email);
-    }
-
-    // SEARCH BY STATUS
-    public List<Patient> findByStatus(String status) {
-        return repository.findByStatus(status);
-    }
-
-    // DELETE
-    public void deletePatient(String id) {
-        repository.deleteById(id);
-
-
-    }
-
-    public List<Patient> sortPatients() {
-        return repository.findAllByOrderByNameAsc();
-
-
-    }
-
-    public List<Patient> findByNameAndStatus(String name, String status) {
-        return repository.findByNameAndStatus(name, status);
+        return repository.findByNameAndStatus(name, status)
+                .stream()
+                .map(PatientMapper::toDTO)
+                .collect(Collectors.toList());
     }
 }
