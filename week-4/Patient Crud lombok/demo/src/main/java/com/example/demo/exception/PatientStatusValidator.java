@@ -1,5 +1,6 @@
-package com.example.demo.validation;
+package com.example.demo.exception;
 
+import com.example.demo.exception.ValidPatientStatus;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

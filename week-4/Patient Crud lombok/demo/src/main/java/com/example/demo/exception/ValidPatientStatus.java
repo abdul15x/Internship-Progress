@@ -1,4 +1,4 @@
-package com.example.demo.validation;
+package com.example.demo.exception;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -6,7 +6,7 @@ import jakarta.validation.Payload;
 import java.lang.annotation.*;
 
 @Documented
-@Constraint(validatedBy = PatientStatusValidator.class)
+@Constraint(validatedBy = com.example.demo.validation.PatientStatusValidator.class)
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidPatientStatus {
